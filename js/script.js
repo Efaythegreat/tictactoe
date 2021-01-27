@@ -2,32 +2,37 @@ let xo = "X";
 let turns = 0;
 let board = {};
 
+
 function performLogic(button, tile) {
   if (xo === "X") {
-    withinLogic("O", tile);
+      $(tile).text(xo);
+      winCondition();
+      xo = "O";
+    
   } else {
-    withinLogic("X", tile);
+      $(tile).text(xo);
+      winCondition();
+      xo = "X";
+    
   }
-}
-
-
-function withinLogic(XO, tile) {
-  board[tile] = xo;
-  $(tile).text(xo);
+  
   turns = turns + 1;
-  winCondition();
-  xo = XO;
+  
 }
+
+
 
 function winCondition(tile) {
   if (turns > 8) {
     $(".result").text("Tie");
   }
   
-  verticle();
+  vertical();
+  horizontal();
+  diagonal();
 }
 
-function verticle(){
+function vertical(){
   checkThree("#tile1","#tile4","#tile7");
   checkThree("#tile2","#tile5","#tile8");
   checkThree("#tile7","#tile6","#tile9");
@@ -40,20 +45,20 @@ function horizontal(){
 function diagonal(){
   checkThree("#tile1","#tile5","#tile9");
   checkThree("#tile3","#tile5","#tile7");
-
 }
 
 
-function checkThree(tile1, tile2, tile3) {
-  console.log($(tile1).text);
-  if (tile1 === xo && tile2 === xo && tile3 === xo) {
-    $(".result").text("Player "+ xo + " Wins");
+
+function checkThree(tileA, tileB, tileC) {
+  if ($(tileA).text() === xo && $(tileB).text() === xo && $(tileC).text() === xo) {
+    $(".result").text("Player "+ xo + " Wins!");
+    $("button").hide();
   }
 }
 
 
 $("#button1").click(function() {
-  performLogic("#button1", "#tile1");
+  performLogic("button1", "#tile1");
 });
 
 $("#button2").click(function() {
